@@ -62,7 +62,9 @@ public class MainActivity  extends  TabActivity {
    // private EditText  edtDate;
     private int year, month, day;
 
-    private Spinner spin1,spinner3;
+    private Spinner spin1,spinner3,spinner1,spinner2;
+
+
     public   String[] iplTeam;
 
     //String url = "http://10.87.196.113/json2/selProvince.php";
@@ -88,7 +90,7 @@ public class MainActivity  extends  TabActivity {
     RadioButton m_sex,w_sex;
     TextView   birthdate;
     EditText   address;
-    AutoCompleteTextView   province_id;
+  //  AutoCompleteTextView   province_id;
     EditText   diagnosis;
 
     //insert  value
@@ -148,7 +150,7 @@ public class MainActivity  extends  TabActivity {
 
     //----- spinner  text ---
     String[] arr = { "---เลือก---","ปากแหว่ง", "เพดานโหว่", "ปากแหว่งและเพดานโหว่", "อื่นๆ" };
-    Spinner  spinner1,spinner2;
+
 
     //tabbar
     TabHost mTabHost;
@@ -234,17 +236,22 @@ public class MainActivity  extends  TabActivity {
 
          //เลิอกจังหวัด
         autoProvince();  //call  autocomplete province
-        autocomplete1 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+       // autocomplete1 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, arrList);
 
-        autocomplete1.setAdapter(adapter);
+      //  autocomplete1.setAdapter(adapter);
 
-         province_id=(AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+     //    province_id=(AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+
+
+
         // diagnosis=(EditText)findViewById(R.id.diagnosis);
        // diagnosis=(Spinner)findViewById(R.id.spinner1);
 
         spinner3=(Spinner)findViewById(R.id.spinner3); //เลิอกเพศ
         spinner3.setAdapter(adapter);
+
+
 
 
         spinner1=(Spinner)findViewById(R.id.spinner1);
@@ -326,7 +333,7 @@ public class MainActivity  extends  TabActivity {
                 strbirthdate = birthdate.getText().toString();
                 straddress = address.getText().toString();
                 //   strprovince_id = province_id.getSelectedItem().toString();
-                strprovince_id = province_id.getText().toString();
+              //  strprovince_id = province_id.getText().toString();
                 //  strdiagnosis = diagnosis.getText().toString();
                 strdiagnosis = spinner1.getSelectedItem().toString();
                 // testalert("testing to click!!");
@@ -443,7 +450,7 @@ public class MainActivity  extends  TabActivity {
         params.add(new BasicNameValuePair("id_sex", val_sex));
         params.add(new BasicNameValuePair("birthdate", strbirthdate));
         params.add(new BasicNameValuePair("address", straddress));
-        params.add(new BasicNameValuePair("province_id", strprovince_id));
+      //  params.add(new BasicNameValuePair("province_id", strprovince_id));
         params.add(new BasicNameValuePair("diagnosis", strdiagnosis));
 
 
@@ -530,7 +537,7 @@ public class MainActivity  extends  TabActivity {
         nameValuePairs.add(new BasicNameValuePair("id_sex",val_sex ));
         nameValuePairs.add(new BasicNameValuePair("birthdate",strbirthdate ));
         nameValuePairs.add(new BasicNameValuePair("address",straddress ));
-        nameValuePairs.add(new BasicNameValuePair("province_id",strprovince_id ));
+      //  nameValuePairs.add(new BasicNameValuePair("province_id",strprovince_id ));
         nameValuePairs.add(new BasicNameValuePair("diagnosis",strdiagnosis ));
 
         nameValuePairs.add(new BasicNameValuePair("detail_diagnosis", strdetail_diagnosis )); //ระบุการวินิจฉัยโรค อื่นๆ   //strdetail_diagnosis
