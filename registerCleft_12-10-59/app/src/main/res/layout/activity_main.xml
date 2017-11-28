@@ -234,6 +234,13 @@
         />
 
 
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/planets_array"
+        />
+
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView1"
         android:layout_width="wrap_content"
@@ -247,6 +254,9 @@
         android:text="" >
         <requestFocus />
     </AutoCompleteTextView>
+
+
+
 
 
 

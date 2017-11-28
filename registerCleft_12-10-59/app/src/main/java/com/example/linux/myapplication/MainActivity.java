@@ -62,7 +62,7 @@ public class MainActivity  extends  TabActivity {
    // private EditText  edtDate;
     private int year, month, day;
 
-    private Spinner spin1;
+    private Spinner spin1,spinner3;
     public   String[] iplTeam;
 
     //String url = "http://10.87.196.113/json2/selProvince.php";
@@ -210,10 +210,7 @@ public class MainActivity  extends  TabActivity {
         //callJSON(); //CALL JSON MYSQL SERVER  for  spinner
 
 
-        autoProvince();  //call  autocomplete province
-        autocomplete1 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, arrList);
-        autocomplete1.setAdapter(adapter);
+
 
 
         name=(EditText)findViewById(R.id.name);
@@ -229,14 +226,25 @@ public class MainActivity  extends  TabActivity {
 
 */
 
-        spinner2=(Spinner)findViewById(R.id.spinner2);
+        spinner2=(Spinner)findViewById(R.id.spinner2); //เลิอกเพศ
 
         birthdate=(TextView)findViewById(R.id.birthdate);
         address=(EditText)findViewById(R.id.address);
        // province_id=(Spinner)findViewById(R.id.province_id);
+
+         //เลิอกจังหวัด
+        autoProvince();  //call  autocomplete province
+        autocomplete1 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, arrList);
+
+        autocomplete1.setAdapter(adapter);
+
          province_id=(AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
         // diagnosis=(EditText)findViewById(R.id.diagnosis);
        // diagnosis=(Spinner)findViewById(R.id.spinner1);
+
+        spinner3=(Spinner)findViewById(R.id.spinner3); //เลิอกเพศ
+        spinner3.setAdapter(adapter);
 
 
         spinner1=(Spinner)findViewById(R.id.spinner1);
@@ -269,11 +277,11 @@ public class MainActivity  extends  TabActivity {
 
 
         //testing insert field
-       // name.setText("กานดา");
-       // lastname.setText("บุญประครอง");
-       // id_card.setText("362510478524");
-      //  telephone.setText("0855241258");
-      //  address.setText("857/74 ถ.ชาตุผดุง ต.ในเมือง อ.เมือง");
+        name.setText("กานดา");
+        lastname.setText("บุญประครอง");
+        id_card.setText("362510478524");
+        telephone.setText("0855241258");
+         address.setText("857/74 ถ.ชาตุผดุง ต.ในเมือง อ.เมือง");
      //   diagnosis.setText("เพดานโหว่");
       //insert  to table
 
@@ -360,7 +368,8 @@ public class MainActivity  extends  TabActivity {
        nameValuePairs.add(new BasicNameValuePair("id_card", strid_card));
        nameValuePairs.add(new BasicNameValuePair("telephone", strtelephone));
        nameValuePairs.add(new BasicNameValuePair("id_sex", String.valueOf(spinner2.getSelectedItem()) ));
-      // nameValuePairs.add(new BasicNameValuePair("id_sex2", val_sex));
+       nameValuePairs.add(new BasicNameValuePair("birthdate", strbirthdate ));
+       nameValuePairs.add(new BasicNameValuePair("address", straddress ));
 
 
        try{
@@ -403,9 +412,11 @@ public class MainActivity  extends  TabActivity {
            String   ck_id_card=json_data.getString("id_card");
            String   ck_telephone=json_data.getString("telephone");
            String   ck_id_sex=json_data.getString("id_sex");
-         //  String   ck_id_sex1=json_data.getString("id_sex");
 
-           Toast.makeText(  getBaseContext(),  ck_name + '/' + ck_lastname  + '/' +  ck_id_card + '/' + ck_telephone + '/' + ck_id_sex ,Toast.LENGTH_SHORT).show();
+           String   ck_birthdate=json_data.getString("birthdate");
+           String   ck_address=json_data.getString("address");
+
+           Toast.makeText(  getBaseContext(),  ck_name + '/' + ck_lastname  + '/' +  ck_id_card + '/' + ck_telephone + '/' + ck_id_sex  +  '/' +  ck_birthdate + '/' + ck_address ,Toast.LENGTH_SHORT).show();
 
 
 
@@ -635,6 +646,7 @@ public class MainActivity  extends  TabActivity {
         List<NameValuePair> params=new ArrayList<NameValuePair>();
         try{
             //String url = "http://10.87.196.113/json2/selProvince.php";
+            String url="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
             JSONArray data = new  JSONArray(getHttpPost(url,params));  //post value in table
             for(int i=0;i<data.length();i++)
             {
@@ -642,8 +654,11 @@ public class MainActivity  extends  TabActivity {
                 // id_weight=c.getInt("id_weight");
                 arr_prov_id[i]=c.getString("PROVINCE_ID");
                 arrProv[i]=c.getString("PROVINCE_NAME");
+
                 allprovince[i]=arr_prov_id[i]+ "-" + arrProv[i];
-                arrList.add(   arrProv[i] + "-" + arr_prov_id[i] );
+
+               // arrList.add(   arrProv[i] + "-" + arr_prov_id[i] );
+                arrList.add(   arrProv[i]  );
             }
 
             /*
@@ -665,11 +680,15 @@ public class MainActivity  extends  TabActivity {
 
 
 
-     public void callJSON()
+     public void callJSON() //autocomplete  เรียกจังหว้ด
      {
          List<NameValuePair> params=new ArrayList<NameValuePair>();
          try{
+
+
              //String url = "http://10.87.196.113/json2/selProvince.php";
+             String url ="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
+
              JSONArray data = new  JSONArray(getHttpPost(url,params));  //post value in table
              for(int i=0;i<data.length();i++)
              {
@@ -677,13 +696,17 @@ public class MainActivity  extends  TabActivity {
                 // id_weight=c.getInt("id_weight");
                   arr_prov_id[i]=c.getString("PROVINCE_ID");
                   arrProv[i]=c.getString("PROVINCE_NAME");
-                  allprovince[i]=arr_prov_id[i]+ "-" + arrProv[i];
+                 // allprovince[i]=arr_prov_id[i]+ "-" + arrProv[i];
+                 allprovince[i]=arr_prov_id[i];
              }
-             String[] iplTeam= {"KKR", "CSK", "RR", "KXIP", "RR", "MI" };
+           //  String[] iplTeam= {"KKR", "CSK", "RR", "KXIP", "RR", "MI" };
           //   spin1=(Spinner) findViewById(R.id.province_id); //OK
-             ArrayAdapter adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item,  allprovince  );
+            // ArrayAdapter adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item,  allprovince  );
+             ArrayAdapter adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item,  arrProv );
              adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
              spin1.setAdapter(adapter);
+
+
          }catch (JSONException e)
          {
              // e.printStackTrace();
