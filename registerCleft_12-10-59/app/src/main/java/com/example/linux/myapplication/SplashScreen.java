@@ -46,7 +46,11 @@ public class SplashScreen extends Activity {
     // String urlinsert="http://10.87.196.170/app_admin/index.php/welcome/insertPatient2";
    // String url=  ip  +  "json2/checkLogin_.php";
 
-   public  String  url_main="http://10.87.196.170/app_admin/";
+   //public  String  url_main="http://10.87.196.170/app_admin/";
+   //https://kkucleft.kku.ac.th/app_admin/index.php/welcome/checklogin
+   public  String  url_main="https://kkucleft.kku.ac.th/app_admin/";
+
+
    //   public static String ip="http://kkucleft.kku.ac.th/app_admin/";
 
   //  String url="http://10.87.196.170/app_admin/index.php/welcome/ckecklogin_andriod";

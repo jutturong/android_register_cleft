@@ -54,7 +54,9 @@ public class MainActivity  extends  TabActivity {
    // http://kkucleft.kku.ac.th/json2/selProvince.php
    //  public static String ip="http://kkucleft.kku.ac.th/";
 
-    public static String ip_main_system="http://10.87.196.170/app_admin/";
+  //  public static String ip_main_system="http://10.87.196.170/app_admin/";
+    //https://kkucleft.kku.ac.th/app_admin/
+    public static String ip_main_system="https://kkucleft.kku.ac.th/app_admin/";
 
     private DatePicker datePicker;
     private Calendar calendar;
