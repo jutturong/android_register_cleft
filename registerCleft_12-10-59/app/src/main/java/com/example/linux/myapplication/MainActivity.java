@@ -173,6 +173,7 @@ public class MainActivity  extends  TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);  //Main program OK
        // setContentView(R.layout.loginpage);
 
@@ -247,7 +248,7 @@ public class MainActivity  extends  TabActivity {
 
         // diagnosis=(EditText)findViewById(R.id.diagnosis);
        // diagnosis=(Spinner)findViewById(R.id.spinner1);
-
+         //เลือกจังหวัด
         spinner3=(Spinner)findViewById(R.id.spinner3); //เลิอกเพศ
         spinner3.setAdapter(adapter);
 
@@ -283,13 +284,19 @@ public class MainActivity  extends  TabActivity {
        // strinformative_tel=informative_tel.getText().toString();
 
 
-        //testing insert field
+        //testing insert field  ทดสอบข้อมูล
         name.setText("กานดา");
         lastname.setText("บุญประครอง");
         id_card.setText("362510478524");
         telephone.setText("0855241258");
          address.setText("857/74 ถ.ชาตุผดุง ต.ในเมือง อ.เมือง");
      //   diagnosis.setText("เพดานโหว่");
+        detail_diagnosis.setText("มีภาวะอื่นร่วมด้วย");
+        informative_name.setText("จัตุรงค์");
+        informative_lastname.setText("เจริญฤทธิ์");
+        informative_tel.setText("0868539079");
+
+
       //insert  to table
 
 
@@ -377,6 +384,20 @@ public class MainActivity  extends  TabActivity {
        nameValuePairs.add(new BasicNameValuePair("id_sex", String.valueOf(spinner2.getSelectedItem()) ));
        nameValuePairs.add(new BasicNameValuePair("birthdate", strbirthdate ));
        nameValuePairs.add(new BasicNameValuePair("address", straddress ));
+       nameValuePairs.add(new BasicNameValuePair("province_id", String.valueOf(spinner3.getSelectedItem()) ));
+           //ภาวะโรคร่วม
+       nameValuePairs.add(new BasicNameValuePair("diagnosis", String.valueOf(spinner1.getSelectedItem()) ));
+       //spinner1
+       nameValuePairs.add(new BasicNameValuePair("detail_diagnosis", strdetail_diagnosis ));
+
+       //    "info_name"=>$informative_name,
+       nameValuePairs.add(new BasicNameValuePair("info_name", strinformative_name ));
+
+       //informative_lastname
+       nameValuePairs.add(new BasicNameValuePair("informative_lastname", strinformative_lastname ));
+
+       nameValuePairs.add(new BasicNameValuePair("informative_tel", strinformative_tel ));
+//informative_tel
 
 
        try{
@@ -413,17 +434,75 @@ public class MainActivity  extends  TabActivity {
        }
 
        try{
+
            JSONObject json_data = new JSONObject(result);
+
+            /*
+
+
+             $data=array(
+               "name"=>$name,
+              "lastname"=>$lastname,
+              "id_card"=>$id_card,
+            "telephone"=>$telephone,
+                "id_sex"=>  $id_va_sex,
+                   "birthdate"=>$conv_dmy,
+                   "address"=>$address,
+                   "province_id"=> $id_prov,
+                   "diagnosis"=>$diagnosis,
+                  "detail_diagnosis"=>$detail_diagnosis,
+                   "info_name"=>$informative_name,
+                      "informative_lastname"=>$informative_lastname,
+
+                    "informative_tel"=>$informative_tel,
+
+          );
+
+
+
+            // echo json_encode(array("name"=>$name));
+            //  echo  json_encode($data);
+
+
+
            String  ck_name=json_data.getString("name");
            String   ck_lastname=json_data.getString("lastname");
            String   ck_id_card=json_data.getString("id_card");
            String   ck_telephone=json_data.getString("telephone");
            String   ck_id_sex=json_data.getString("id_sex");
-
            String   ck_birthdate=json_data.getString("birthdate");
            String   ck_address=json_data.getString("address");
+           String   ck_province_id=json_data.getString("province_id");
+           String   ck_diagnosis=json_data.getString("diagnosis");
+           String   ck_detail_diagnosis=json_data.getString("detail_diagnosis");
+           String   ck_informative_name=json_data.getString("info_name");
+           String   ck_informative_lastname=json_data.getString("informative_lastname");
+           String   ck_strinformative_tel=json_data.getString("informative_tel");
 
-           Toast.makeText(  getBaseContext(),  ck_name + '/' + ck_lastname  + '/' +  ck_id_card + '/' + ck_telephone + '/' + ck_id_sex  +  '/' +  ck_birthdate + '/' + ck_address ,Toast.LENGTH_SHORT).show();
+           Toast.makeText(  getBaseContext(),  ck_name + '/' + ck_lastname  + '/' +  ck_id_card + '/' + ck_telephone + '/' + ck_id_sex  +  '/' +  ck_birthdate + '/' + ck_address + '/' + ck_province_id + '/' + ck_diagnosis + '/' + ck_detail_diagnosis + '/' + ck_informative_name + '/' + ck_informative_lastname + '/' +  ck_strinformative_tel ,Toast.LENGTH_SHORT).show();
+
+           */
+
+            // echo json_encode(array("success"=>1));
+
+           //String  success  =   json_data.getString("success");
+          // String  success  =   json_data.getString("success");
+           Integer success = json_data.getInt("success");
+          // Integer  int1 =
+
+          // Toast.makeText(  getBaseContext(),  success.toString() ,Toast.LENGTH_SHORT).show();
+
+
+           if( success == 1 )
+           {
+
+               Toast.makeText(  getBaseContext(),  "บันทึกข้อมูลแล้ว" ,Toast.LENGTH_SHORT).show();
+
+           }
+           else
+           {
+               Toast.makeText(  getBaseContext(),  "ไม่สามารถบันทึกข้อมูลได้" ,Toast.LENGTH_SHORT).show();
+           }
 
 
 
@@ -648,7 +727,7 @@ public class MainActivity  extends  TabActivity {
     }
 
 
-    public void  autoProvince()
+    public void  autoProvince() //ใช้เรียกจังหวัด
     {
         List<NameValuePair> params=new ArrayList<NameValuePair>();
         try{
@@ -664,8 +743,8 @@ public class MainActivity  extends  TabActivity {
 
                 allprovince[i]=arr_prov_id[i]+ "-" + arrProv[i];
 
-               // arrList.add(   arrProv[i] + "-" + arr_prov_id[i] );
-                arrList.add(   arrProv[i]  );
+                arrList.add(   arrProv[i] + "-" + arr_prov_id[i] );
+                //arrList.add(   arrProv[i]  );
             }
 
             /*
