@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 27, 2017 at 04:25 PM
+-- Generation Time: Nov 29, 2017 at 03:18 PM
 -- Server version: 5.5.54-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.21
 
@@ -11811,7 +11811,7 @@ CREATE TABLE IF NOT EXISTS `tb_patientcleft` (
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   PRIMARY KEY (`id_patient`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=231 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=252 ;
 
 --
 -- Dumping data for table `tb_patientcleft`
@@ -11820,7 +11820,10 @@ CREATE TABLE IF NOT EXISTS `tb_patientcleft` (
 INSERT INTO `tb_patientcleft` (`id_patient`, `name`, `lastname`, `id_card`, `telephone`, `id_sex`, `birthdate`, `address`, `province_id`, `diagnosis`, `detail_diagnosis`, `info_name`, `informative_lastname`, `informative_tel`, `latitude`, `longitude`) VALUES
 (172, 'กานดา2', 'วรประวัติ', 1111111111, '444455', 2, '2010-03-03', '123 ต.ในเมือง อ.เมือง จ.ขอนแก่น', 26, 'เพดานโหว่', 'มีความพิการทางการได้ยิน', 'วิชิต', 'ศรีเชียง', '0868539042', 16.4642893, 102.8285383),
 (173, 'สุวัติ', 'ละออพันธ์', 2147483647, '0855241258', 2, '2015-05-29', '857', 25, '', '', 'วิชิต', 'ศรีเชียง', '0858539042', 16.6427287, 103.3881626),
-(230, 'กานต์', 'พิรมย์', 2147483647, '0868593217', 1, '2014-02-03', 'ขอนแก่น', 33, 'ปากแหว่งและเพดานโหว่', 'ปากแหว่ง', 'วิชิต', 'ศรีเชีนง', '085896371', 15.9884487, 103.9252753);
+(230, 'กานต์', 'พิรมย์', 2147483647, '0868593217', 1, '2014-02-03', 'ขอนแก่น', 33, 'ปากแหว่งและเพดานโหว่', 'ปากแหว่ง', 'วิชิต', 'ศรีเชีนง', '085896371', 15.9884487, 103.9252753),
+(231, 'กานดา', 'บุญประครอง', 2147483647, '0855241258', 2, '0000-00-00', '', 0, '', '', '', '', '', 0, 0),
+(250, 'กานดา2', 'บุญประครอง2', 11111, '0855241259', 1, '2017-11-29', '857/74 ถ.ชาตุผดุง ต.ในเมือง อ.เมือง3', 6, 'ปากแหว่งและเพดานโหว่3', 'มีภาวะอื่นร่วมด้วย3', 'จัตุรงค์3', 'เจริญฤทธิ์3', '0868539074', 0, 0),
+(251, 'กานดา', 'บุญประครอง', 2147483647, '0855241258', 1, '2017-11-29', '857/74 ถ.ชาตุผดุง ต.ในเมือง อ.เมือง', 3, 'ปากแหว่งและเพดานโหว่', 'มีภาวะอื่นร่วมด้วย', 'จัตุรงค์', 'เจริญฤทธิ์', '0868539079', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -11870,6 +11873,29 @@ CREATE TABLE IF NOT EXISTS `tb_sex` (
 INSERT INTO `tb_sex` (`id_sex`, `sex_content`) VALUES
 (1, 'ชาย'),
 (2, 'หญิง');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_userandroid`
+--
+
+CREATE TABLE IF NOT EXISTS `tb_userandroid` (
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(50) DEFAULT NULL,
+  `password` text,
+  `id_level` int(1) DEFAULT NULL,
+  `firstname` varchar(30) DEFAULT NULL,
+  `lastname` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `tb_userandroid`
+--
+
+INSERT INTO `tb_userandroid` (`id_user`, `user`, `password`, `id_level`, `firstname`, `lastname`) VALUES
+(1, 'jutturong', 'd8a464e5c99e73c189a16f971fca6250', 1, 'jutturong', 'charoenrit');
 
 -- --------------------------------------------------------
 
