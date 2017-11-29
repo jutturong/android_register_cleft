@@ -19,7 +19,7 @@
 
 //http://kkucleft.kku.ac.th/app_admin/
 
-$config['base_url'] = 'http://192.168.2.112/app_admin/';
+$config['base_url'] = 'http://10.87.196.170/app_admin/';
 
 
 /*

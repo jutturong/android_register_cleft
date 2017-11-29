@@ -25,7 +25,14 @@ class Welcome extends CI_Controller {
       $sess_data=array(
                           "sess_us"=>"",
                           "sess_ps"=>"",
+                          "sess_id_level"=>"",
+                         "sess_firstname"=>"",
+                         "sess_	lastname"=>"",
+                         "sess_logon"=>0,
                         );
+      
+      
+      
       $this->session->unset_userdata( $sess_data );
     
           $this->session->userdata("sess_us");
@@ -34,8 +41,57 @@ class Welcome extends CI_Controller {
                 $data['title']= $this->title;
                 $this->load->view('login',$data);
 	}
+        
+        //  "http://10.87.196.170/app_admin/index.php/welcome/ckecklogin_andriod";
+        public function ckecklogin_andriod()
+        {
+             $us= trim($this->input->get_post("us"));
+             $ps= md5($this->input->get_post("ps"));
+            //  $ps= trim($this->input->get_post("ps"));
+              $tb="tb_userandroid";
+             
+             /*
+         txtUser.setText("jutturong"); //sim login
+          txtPass.setText("jutturong12345"); //sim login
+              */
+             
+             $query=$this->db->get_where($tb,array("user"=>$us,"password"=>$ps));
+             $ck_num= $query->num_rows();
+             if( $ck_num == 1 )
+             {
+                  
+                 
+                     $row=$query->row();
+                      
+                   $data=array(
+                         "sess_id_level"=>$row->id_level,
+                         "sess_firstname"=>$row->firstname,
+                         "sess_	lastname"=>$row->	lastname,
+                         "sess_logon"=>1,
+                    );
+                   
+                     $this->session->set_userdata($data);
+                     //  $this->session->userdata("sess_id_level")   //ทดสอบ การเรียกใช้ session
+                     //echo json_encode(array("us"=>$us,"ps"=>$ps,"ck1"=> $ck_num,"sess_id_level"=>$this->session->userdata("sess_id_level"))); 
+                     echo json_encode(array("sess_logon"=>1));
+             }
+             
+             
+          
+             
+            
+        }
+        
+        
         public  function checklogin()
         {
+            
+            /*
+                   txtUser.setText("jutturong"); //sim login
+          txtPass.setText("ju12345"); //sim login
+             */
+            
+            
             //echo "testing page";
              $data['title']= $this->title;
             
@@ -44,13 +100,36 @@ class Welcome extends CI_Controller {
             
              
              
-             $user= trim( $this->input->get_post("us") );
-            //echo "<br>";
-             $pass=trim($this->input->get_post("ps"));
-            //echo "<br>";
+              $user= trim( $this->input->get_post("us") );
+           //echo "<br>";
+              $pass=trim(md5($this->input->get_post("ps")));
+          // echo "<br>";
+             $tb="tb_userandroid";
+             //  $query=$this->db->get_where($tb,array("user"=>$us,"password"=>$ps));
+              $query=$this->db->get_where($tb,array("user"=>$user,"password"=>$pass));
+              $ck=$query->num_rows();
+             //echo br();
+             if( $ck == 1 )
+             {
+                  $row=$query->row();
+                  $data=array(
+                         "sess_id_level"=>$row->id_level,
+                         "sess_firstname"=>$row->firstname,
+                         "sess_	lastname"=>$row->	lastname,
+                         "sess_logon"=>1,
+                    );
+                    $this->session->set_userdata($data);
+                    
+                  //echo  $this->session->userdata("sess_id_level");   //ทดสอบ การเรียกใช้ session
+                  // echo  $this->session->userdata("sess_logon");   //ทดสอบ การเรียกใช้ session
+                  //   redirect("welcome/index");     
+                       $data["title"]=$this->title;
+                       $this->load->view('mainpage',$data);
+             }
+           
             
             
-            
+            /*
               if(  $user=="admin"  &&  $pass == "1111111189"  )
               {
                     $sess_data=array(
@@ -82,6 +161,8 @@ class Welcome extends CI_Controller {
                 
                            redirect("welcome/index");
               }
+             */
+             
              
             
            
@@ -94,7 +175,8 @@ class Welcome extends CI_Controller {
             
           $user=$this->session->userdata("sess_us");
           $pass=$this->session->userdata("sess_ps");
-          if(  $user=="admin"  &&  $pass == "1111111189"  )
+         // if(  $user=="admin"  &&  $pass == "1111111189"  )
+          if(   $this->session->userdata("sess_logon") == 1 )
           {   
 
              //FROM `tb_patientcleft` 
@@ -129,8 +211,9 @@ class Welcome extends CI_Controller {
         {
           $user=$this->session->userdata("sess_us");
           $pass=$this->session->userdata("sess_ps");
-          if(  $user=="admin"  &&  $pass == "1111111189"  )
-          {   
+        //  if(  $user=="admin"  &&  $pass == "1111111189"  )
+          if(   $this->session->userdata("sess_logon") == 1 )
+        {   
               
               
               
@@ -158,6 +241,9 @@ class Welcome extends CI_Controller {
        //http://kkucleft.kku.ac.th/app_admin/index.php/welcome/pc_insert_patient
         function pc_insert_patient()  //เพิ่มข้อมูลการบันทึกจาก PC
         {
+            
+                if(   $this->session->userdata("sess_logon") == 1 )
+                {
             
               //echo "T";
                 $id_patient=trim($this->input->get_post("txt_id_patient"));
@@ -238,7 +324,7 @@ class Welcome extends CI_Controller {
                     echo json_encode(array("success"=>0));
                 }
                 
-            
+                }
         }
         
         
@@ -249,7 +335,8 @@ class Welcome extends CI_Controller {
             
           $user=$this->session->userdata("sess_us");
           $pass=$this->session->userdata("sess_ps");
-          if(  $user=="admin"  &&  $pass == "1111111189"  )
+       //   if(  $user=="admin"  &&  $pass == "1111111189"  )
+           if(   $this->session->userdata("sess_logon") == 1 )
           {  
             
             
@@ -358,7 +445,8 @@ class Welcome extends CI_Controller {
         {
           $user=$this->session->userdata("sess_us");
           $pass=$this->session->userdata("sess_ps");
-          if(  $user=="admin"  &&  $pass == "1111111189"  )
+        //  if(  $user=="admin"  &&  $pass == "1111111189"  )
+           if(   $this->session->userdata("sess_logon") == 1 )
           {  
 
                $id=trim($this->input->get_post("id"));
@@ -388,33 +476,63 @@ class Welcome extends CI_Controller {
           
         }
         
+        /*
+        public  function json_province()//เรียกจังหวัด
+        {
+            
+            
+        }
+         * 
+         */
+        
+        
         //http://10.87.196.170/app_admin/index.php/welcome/insertPatient2
          public  function insertPatient2()
          {
-              //  $tb="tb_patientcleft";
-                
+
+               //  if(   $this->session->userdata("sess_logon") == 1 )
+             //    {
              $name=trim($this->input->get_post("name"));
              $lastname=trim($this->input->get_post("lastname"));
              $id_card=trim($this->input->get_post("id_card"));
              $telephone=trim($this->input->get_post("telephone"));
-             $telephone=trim($this->input->get_post("telephone"));
-            //   $id_sex=trim($this->input->get_post("id_sex"));
-              $id_sex1=trim($this->input->get_post("id_sex1"));  
-             
-             
-              /*
+             $id_sex=trim($this->input->get_post("id_sex"));
               if( $id_sex == "ชาย"  ) 
               {
                         $id_va_sex=1;
-
               }
               elseif( $id_sex == "หญิง"  )
               {
                         $id_va_sex=2;
               }
-             */
               
+              $birthdate =trim($this->input->get_post("birthdate"));
+                if(  strlen($birthdate) > 0   )  // format 2015-05-04
+                {
+                            $arrbth=explode("/", $birthdate );  
+                            $y=$arrbth[2];
+                            $yconv= $y - 543;
+                            $conv_dmy= $yconv."-".$arrbth[1]."-".$arrbth[0];
+                 }
               
+               $address =trim($this->input->get_post("address"));
+               $province_id =trim($this->input->get_post("province_id"));  
+                 if(  strlen($province_id) > 0  )
+                    {
+                        $arrprov=explode("-", $province_id );
+                       // $id_prov=$arrprov[0]; // old code
+                         $id_prov=$arrprov[1]; 
+                    }
+              
+                     $diagnosis =trim($this->input->get_post("diagnosis"));
+                    
+                  $detail_diagnosis=trim($this->input->get_post("detail_diagnosis"));
+                  
+                  $informative_name=trim($this->input->get_post("info_name"));
+                  
+                   $informative_lastname=trim($this->input->get_post("informative_lastname"));
+                   
+                     $informative_tel=trim($this->input->get_post("informative_tel"));  
                   
              /*
               $data=array(
@@ -434,18 +552,67 @@ class Welcome extends CI_Controller {
           );
              */
              
+                     
              $data=array(
                "name"=>$name,
               "lastname"=>$lastname,
               "id_card"=>$id_card,
             "telephone"=>$telephone,
-                 "id_sex"=> $id_sex1,
+                "id_sex"=>  $id_va_sex,
+                   "birthdate"=>$conv_dmy,
+                   "address"=>$address,
+                   "province_id"=> $id_prov,
+                   "diagnosis"=>$diagnosis,
+                  "detail_diagnosis"=>$detail_diagnosis,
+                   "info_name"=>$informative_name,
+                      "informative_lastname"=>$informative_lastname,
+                 
+                    "informative_tel"=>$informative_tel,
+                 
           );
              
+             
+             
             // echo json_encode(array("name"=>$name));
+            //  echo  json_encode($data);
              
-             echo  json_encode($data);
-             
+              
+               $tb="tb_patientcleft";
+              $ck= $this->db->insert($tb,$data);
+              if( $ck )
+              {
+                    /*
+                        echo  json_encode($data);
+                      String  ck_name=json_data.getString("name");
+           String   ck_lastname=json_data.getString("lastname");
+           String   ck_id_card=json_data.getString("id_card");
+           String   ck_telephone=json_data.getString("telephone");
+           String   ck_id_sex=json_data.getString("id_sex");
+           String   ck_birthdate=json_data.getString("birthdate");
+           String   ck_address=json_data.getString("address");
+           String   ck_province_id=json_data.getString("province_id");
+           String   ck_diagnosis=json_data.getString("diagnosis");
+           String   ck_detail_diagnosis=json_data.getString("detail_diagnosis");
+           String   ck_informative_name=json_data.getString("info_name");
+           String   ck_informative_lastname=json_data.getString("informative_lastname");
+           String   ck_strinformative_tel=json_data.getString("informative_tel");
+
+           Toast.makeText(  getBaseContext(),  ck_name + '/' + ck_lastname  + '/' +  ck_id_card + '/' + ck_telephone + '/' + ck_id_sex  +  '/' +  ck_birthdate + '/' + ck_address + '/' + ck_province_id + '/' + ck_diagnosis + '/' + ck_detail_diagnosis + '/' + ck_informative_name + '/' + ck_informative_lastname + '/' +  ck_strinformative_tel ,Toast.LENGTH_SHORT).show();
+
+
+                     */
+                  
+                  echo json_encode(array("success"=>1));
+                  
+              }
+              elseif( !$ck )
+              {
+                    echo json_encode(array("success"=>0));
+                  
+              }
+            
+            
+              //   }
              
          }
         
@@ -455,6 +622,9 @@ class Welcome extends CI_Controller {
         public  function insertPatient()
         {
             
+                if(   $this->session->userdata("sess_logon") == 1 )
+                {     
+                    
               //echo "test function";
               $name=trim($this->input->get_post("name"));
               $lastname=trim($this->input->get_post("lastname"));
@@ -540,6 +710,8 @@ class Welcome extends CI_Controller {
     }
            echo  json_encode($flag);
  
+                }
+                
         }
         
         
@@ -548,8 +720,8 @@ class Welcome extends CI_Controller {
         public function json_backend1()
         {
             
-        
-
+            if(   $this->session->userdata("sess_logon") == 1 )
+            {
              //FROM `tb_patientcleft` 
             //SELECT * FROM `province` 
              //PROVINCE_CODE
@@ -575,13 +747,14 @@ class Welcome extends CI_Controller {
              }
              echo json_encode($rows);
   
-             
+            }
         } 
         
-         //http://kkucleft.kku.ac.th/app_admin/index.php/welcome/json_province_backend
+         //http://10.87.196.170/app_admin/index.php/welcome/json_province_backend
         public function json_province_backend()
         {
-
+            //   if(   $this->session->userdata("sess_logon") == 1 )
+             //  {
              $tb="province";
              $q=$this->db->get($tb);
              foreach($q->result() as $row)
@@ -590,11 +763,15 @@ class Welcome extends CI_Controller {
                  
              }
              echo json_encode($rows);
+           //    }
 
         }
         
          //http://kkucleft.kku.ac.th/app_admin/index.php/welcome/json_province_backend
         public function json_location()
+                {
+            
+                if(   $this->session->userdata("sess_logon") == 1 )
                 {
                        $tb="location";
                                     $q=$this->db->get($tb);
@@ -605,7 +782,7 @@ class Welcome extends CI_Controller {
                           }
                           echo json_encode($rows);
             
-            
+                     }
                 }
 
 }
