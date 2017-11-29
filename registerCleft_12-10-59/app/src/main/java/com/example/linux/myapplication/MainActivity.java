@@ -52,9 +52,9 @@ public class MainActivity  extends  TabActivity {
 
    // public static String ip="http://10.87.196.113/";
    // http://kkucleft.kku.ac.th/json2/selProvince.php
-     public static String ip="http://kkucleft.kku.ac.th/";
+   //  public static String ip="http://kkucleft.kku.ac.th/";
 
-   // public static String ip="http://10.87.196.170/";
+    public static String ip_main_system="http://10.87.196.170/app_admin/";
 
     private DatePicker datePicker;
     private Calendar calendar;
@@ -68,7 +68,7 @@ public class MainActivity  extends  TabActivity {
     public   String[] iplTeam;
 
     //String url = "http://10.87.196.113/json2/selProvince.php";
-    String url =   ip  +  "json2/selProvince.php";
+  //  String url =   ip  +  "json2/selProvince.php";
 
     InputStream is=null;
 
@@ -138,9 +138,9 @@ public class MainActivity  extends  TabActivity {
 
    //http://10.87.196.170/app_admin/index.php/welcome/checklogin
 
-
-    public  String urlinsert="http://10.87.196.170/app_admin/index.php/welcome/insertPatient2";
-
+//ip_main_system
+  //  public  String urlinsert="http://10.87.196.170/app_admin/index.php/welcome/insertPatient2";
+public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
 
 
     //---- Autocomplete  PROVINCE จัวงหว
@@ -178,7 +178,7 @@ public class MainActivity  extends  TabActivity {
        // setContentView(R.layout.loginpage);
 
         intent=getIntent();
-        Id_per=intent.getStringExtra("Id_per");
+       // Id_per=intent.getStringExtra("Id_per");
 
 /*    //check id_per from  table intent
         final AlertDialog.Builder adb=new AlertDialog.Builder(this);
@@ -403,7 +403,10 @@ public class MainActivity  extends  TabActivity {
        try{
            HttpClient httpclient = new DefaultHttpClient();
            //HttpPost httppost = new HttpPost(url);
-           HttpPost httppost = new HttpPost("http://10.87.196.170/app_admin/index.php/welcome/insertPatient2");
+           //ip_main_system
+         //  HttpPost httppost = new HttpPost("http://10.87.196.170/app_admin/index.php/welcome/insertPatient2");
+           HttpPost httppost = new HttpPost(  ip_main_system +"index.php/welcome/insertPatient2");
+
            // httpPost.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));
            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
            HttpResponse response = httpclient.execute(httppost);
@@ -732,7 +735,11 @@ public class MainActivity  extends  TabActivity {
         List<NameValuePair> params=new ArrayList<NameValuePair>();
         try{
             //String url = "http://10.87.196.113/json2/selProvince.php";
-            String url="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
+            //ip_main_system
+
+          //  String url="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
+            String url= ip_main_system + "index.php/welcome/json_province_backend";
+
             JSONArray data = new  JSONArray(getHttpPost(url,params));  //post value in table
             for(int i=0;i<data.length();i++)
             {
@@ -773,7 +780,10 @@ public class MainActivity  extends  TabActivity {
 
 
              //String url = "http://10.87.196.113/json2/selProvince.php";
-             String url ="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
+            // String url ="http://10.87.196.170/app_admin/index.php/welcome/json_province_backend";
+
+             //ip_main_system
+             String url = ip_main_system + "index.php/welcome/json_province_backend";
 
              JSONArray data = new  JSONArray(getHttpPost(url,params));  //post value in table
              for(int i=0;i<data.length();i++)

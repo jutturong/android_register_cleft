@@ -37,13 +37,21 @@ public class SplashScreen extends Activity {
     // Splash screen timer
     //private static int SPLASH_TIME_OUT = 2000;  //OK code
     //String  ip =  new MainActivity().ip;
-    String  ip =   MainActivity.ip;
+    //String  ip =   MainActivity.ip;
     
     String strUser;
     String strPass;
 
     //String url="http://10.87.196.113/json2/checkLogin_.php";
-    String url=  ip  +  "json2/checkLogin_.php";
+    // String urlinsert="http://10.87.196.170/app_admin/index.php/welcome/insertPatient2";
+   // String url=  ip  +  "json2/checkLogin_.php";
+
+   public  String  url_main="http://10.87.196.170/app_admin/";
+   //   public static String ip="http://kkucleft.kku.ac.th/app_admin/";
+
+  //  String url="http://10.87.196.170/app_admin/index.php/welcome/ckecklogin_andriod";
+
+   public String url= url_main +  "index.php/welcome/ckecklogin_andriod";
 
 
     InputStream is=null;
@@ -78,8 +86,8 @@ public class SplashScreen extends Activity {
         final Button btnLogin = (Button) findViewById(R.id.btnLogin);
 
 
-          txtUser.setText("tawanchai"); //sim login
-          txtPass.setText("admin"); //sim login
+          txtUser.setText("jutturong"); //sim login
+          txtPass.setText("ju12345"); //sim login
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -120,12 +128,13 @@ public class SplashScreen extends Activity {
 
 
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("strUser", strUser));
-        nameValuePairs.add(new BasicNameValuePair("strPass", strPass));
+        nameValuePairs.add(new BasicNameValuePair("us", strUser));
+        nameValuePairs.add(new BasicNameValuePair("ps", strPass));
         try{
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(url);
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+           // httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             is = entity.getContent();
@@ -155,47 +164,20 @@ public class SplashScreen extends Activity {
 
         try{
             JSONObject json_data = new JSONObject(result);
-            Id_per=json_data.getString("Id_per");
-          //  id_sex=json_data.getString("id_sex");
-          //  Name=json_data.getString("Name");
-         //   strError=json_data.getString("Error");
-            StatusID=json_data.getString("StatusID");
+            Integer ck_sess_logon=json_data.getInt("sess_logon");
+
+            if( ck_sess_logon.equals(1) )
+            {
+                Intent sendmain = new Intent(SplashScreen.this,MainActivity.class);
+             //   sendmain.putExtra("Id_per", Id_per );
+                startActivity(sendmain);
+            }
 
 
-            //Toast.makeText(getBaseContext(),"Id_per : "+Id_per,Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getBaseContext(),"ยินดีต้อนรับ  : "+Name,Toast.LENGTH_SHORT).show();
         }catch (Exception e)
         {
 
             Log.e("Fail 3",e.toString());
-        }
-
-
-
-
-       // if( StatusID.length() == 0  )
-        if( StatusID.equals("0")  )
-        {
-            Toast.makeText(getBaseContext()," Login Fail!! ",Toast.LENGTH_SHORT).show();
-        }
-        //else if (  StatusID.length() == 1 )
-        else if (  StatusID.equals("1") )
-        {
-            /*
-            Toast.makeText(getBaseContext(),"ยินดีต้อนรับ  : "+Name ,Toast.LENGTH_SHORT).show();
-            Intent newActivity = new Intent(SplashScreen.this,MainActivity.class);
-            newActivity.putExtra("Id_per", Id_per );
-            newActivity.putExtra("id_sex", id_sex );
-            newActivity.putExtra("StatusID" ,StatusID );
-            startActivity(newActivity);
-            */
-
-           // testAlert(StatusID); //OK
-          //  Toast.makeText(getBaseContext(),"ยินดีต้อนรับ  : "+Name ,Toast.LENGTH_SHORT).show();
-            Intent sendmain = new Intent(SplashScreen.this,MainActivity.class);
-            sendmain.putExtra("Id_per", Id_per );
-            startActivity(sendmain);
-
         }
 
 
