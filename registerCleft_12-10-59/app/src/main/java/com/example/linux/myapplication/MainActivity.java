@@ -3,9 +3,11 @@ package com.example.linux.myapplication;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
@@ -129,8 +131,10 @@ public class MainActivity  extends  TabActivity {
     String  stauts_insert = "บันทึกสำเร็จ";
 
 
-
-
+    /* progress bar */
+    ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarHandler = new Handler();
 
 
     //public  String urlinsert="http://10.87.196.113/json2/insertPatient.php";
@@ -324,6 +328,7 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
 
 
 
+
         Button btn_save=(Button) findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,11 +363,7 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
 
                 //insertPatient();
 
-
-
-                insertPatient3();
-
-
+                insertPatient(v);
 
 
 
@@ -375,7 +376,7 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
 
 
 
-   private void insertPatient3()
+   private void insertPatient(View v)
    {
 
        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -500,8 +501,8 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
 
            if( success == 1 )
            {
-
-               Toast.makeText(  getBaseContext(),  "บันทึกข้อมูลแล้ว" ,Toast.LENGTH_SHORT).show();
+               progressBar(v); //แสดงสถานะการบันทึก
+              // Toast.makeText(  getBaseContext(),  "บันทึกข้อมูลแล้ว" ,Toast.LENGTH_SHORT).show();
 
            }
            else
@@ -521,200 +522,70 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
    }
 
 
+ public void progressBar(View v)
+ {
+     progressBar =new ProgressDialog(v.getContext());
+     progressBar.setCancelable(true);
+     progressBar.setMessage("กำลังดำเนินการบันทึกข้อมูล...");
+     progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+     progressBar.setProgress(0);
+     progressBar.setMax(100);
+     progressBar.show();
 
-    private void insertPatient2()
-    {
-        List<NameValuePair> params=new ArrayList<NameValuePair>();
-        //params.add(new BasicNameValuePair("id_user","income"));
+        progressBarStatus = 0;
+     new Thread(new Runnable() {
+         public void run() {
+             while (progressBarStatus < 100) {
 
-        params.add(new BasicNameValuePair("name", strname));
-        params.add(new BasicNameValuePair("lastname", strlastname));
-        params.add(new BasicNameValuePair("id_card", strid_card));
-        params.add(new BasicNameValuePair("telephone", strtelephone));
-        params.add(new BasicNameValuePair("id_sex", val_sex));
-        params.add(new BasicNameValuePair("birthdate", strbirthdate));
-        params.add(new BasicNameValuePair("address", straddress));
-      //  params.add(new BasicNameValuePair("province_id", strprovince_id));
-        params.add(new BasicNameValuePair("diagnosis", strdiagnosis));
+                 // process some tasks
+                 progressBarStatus = DoWork();
 
+                 try {
+                     Thread.sleep(15);
+                 } catch (InterruptedException e) {
+                     e.printStackTrace();
+                 }
 
-        params.add(new BasicNameValuePair("detail_diagnosis", strdetail_diagnosis )); //ระบุการวินิจฉัยโรค อื่นๆ
-        params.add(new BasicNameValuePair("informative_name", informative_name.getText().toString() )); //ชื่อผู้ให้ ข้อมูล
-        params.add(new BasicNameValuePair("informative_lastname", informative_lastname.getText().toString() )); //นามสกุลผู้ให้ข้อมูล
-        params.add(new BasicNameValuePair("informative_tel", informative_tel.getText().toString() )); //เบอร์โทรศัพท์ผู้ให้ข้อมูล
+                 // Update the progress bar
+                 progressBarHandler.post(new Runnable() {
+                     public void run() {
+                         progressBar.setProgress(progressBarStatus);
+                        // Toast.makeText(  getBaseContext(),  "บันทึกข้อมูลแล้ว" ,Toast.LENGTH_SHORT).show();
+                     }
+                 });
+             }
 
-
-        try{
-
-
-
-
-            JSONArray data = new  JSONArray(getHttpPost( urlinsert ,params ));  //post value in table
-
-
-
-            for(int i=0;i<data.length();i++)
-            {
-                JSONObject c=data.getJSONObject(i);
-               // stackArr[i]=c.getInt("val");
-
-
-                code= c.getInt("code");
-                String name= c.getString("name");
+         }
+     }).start();
 
 
+ }
 
 
+    // DoWork & Set Status Progress Bar
+    public int DoWork() {
 
+        // Do some work EG: Save , Download , Insert , ..
+        // **** Work
+        // **** Work
+        // **** Work
+        // **** Work
+        progressBarStatus++; // Work process and return status
 
-            }
-
-
-            /*
-            if( code==1 )
-            {
-                Toast.makeText(getBaseContext(),"บันทึกสำเร็จ  " + name ,Toast.LENGTH_SHORT).show();
-            }else if(  code==0 )
-            {
-                Toast.makeText(getBaseContext(),"Sorry, Try Again",Toast.LENGTH_LONG).show();
-            }
-*/
-
-
-
-
-             /*
-            code= json_data.getInt("code");
-            String name= json_data.getString("name");
-            if( code==1 )
-            {
-                Toast.makeText(getBaseContext(),"บันทึกสำเร็จ  " + name ,Toast.LENGTH_SHORT).show();
-            }else if(  code==0 )
-            {
-                Toast.makeText(getBaseContext(),"Sorry, Try Again",Toast.LENGTH_LONG).show();
-            }
-             */
-
-            /// openChart( stackArr);
-
-
-
-        }catch (JSONException e)
+        if( progressBarStatus < 100)
         {
-            e.printStackTrace();
-            Log.e("Fail ", e.toString());
-            Toast.makeText(getApplicationContext(), "Invalid IP Address", Toast.LENGTH_LONG);
-            StringBuilder sb=new StringBuilder();
+            return progressBarStatus;
         }
 
-    }
-
-    private void insertPatient()   // `tb_patientcleft`
-    {
-
-
-        ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("name",strname ));
-        nameValuePairs.add(new BasicNameValuePair("lastname",strlastname ));
-        nameValuePairs.add(new BasicNameValuePair("id_card",strid_card ));
-        nameValuePairs.add(new BasicNameValuePair("telephone",strtelephone ));
-        nameValuePairs.add(new BasicNameValuePair("id_sex",val_sex ));
-        nameValuePairs.add(new BasicNameValuePair("birthdate",strbirthdate ));
-        nameValuePairs.add(new BasicNameValuePair("address",straddress ));
-      //  nameValuePairs.add(new BasicNameValuePair("province_id",strprovince_id ));
-        nameValuePairs.add(new BasicNameValuePair("diagnosis",strdiagnosis ));
-
-        nameValuePairs.add(new BasicNameValuePair("detail_diagnosis", strdetail_diagnosis )); //ระบุการวินิจฉัยโรค อื่นๆ   //strdetail_diagnosis
-        nameValuePairs.add(new BasicNameValuePair("informative_name", strinformative_name )); //ชื่อผู้ให้ ข้อมูล
-        nameValuePairs.add(new BasicNameValuePair("informative_lastname", strinformative_lastname )); //นามสกุลผู้ให้ข้อมูล
-        nameValuePairs.add(new BasicNameValuePair("informative_tel", strinformative_tel )); //เบอร์โทรศัพท์ผู้ให้ข้อมูล
-
-        try
-        {
-            HttpClient httpClient=new DefaultHttpClient();
-            HttpPost   httpPost=new  HttpPost(urlinsert);
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));  //insert thai in support mysql
-            HttpResponse response=httpClient.execute(httpPost);
-            HttpEntity entity=response.getEntity();
-            is=entity.getContent();
-            Log.e("pass 1","connection success");
-
-        }catch (Exception e)
-        {
-            Log.e("Fail ",e.toString());
-            Toast.makeText(getApplicationContext(),"Invalid IP Address",Toast.LENGTH_LONG);
-            StringBuilder sb=new StringBuilder();
-
-        }
-
-
-        try{
-
-
-            /*
-            String data  = URLEncoder.encode("name", "UTF-8")  + "=" + URLEncoder.encode( strname, "UTF-8");
-            data += URLEncoder.encode("lastname", "UTF-8")  + "=" + URLEncoder.encode( strlastname , "UTF-8");
-
-            URL url = new URL(urlinsert);
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            */
-
-
-           // BufferedReader reader=new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-            BufferedReader reader=new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
-
-            StringBuilder sb=new StringBuilder();
-            while((line=reader.readLine()) != null )
-            {
-                sb.append(line+"\n");
-               // wr.write(data);
-               // wr.flush();
-
-            }
-
-
-
-            is.close();
-            result=sb.toString();
-            Log.e("pass 2 ", "connection success");
-
-
-
-
-        }catch (Exception e)
-        {
-            Log.e("Fail 2", e.toString());
-        }
-
-
+        // When Finish
         try {
-
-
-            JSONObject json_data=new JSONObject(result);
-            code= json_data.getInt("code");
-            //String name= json_data.getString("name");
-
-            if( code==1 )
-            {
-               // Toast.makeText(getBaseContext(),"บันทึกสำเร็จ   : " +  strdetail_diagnosis  ,Toast.LENGTH_SHORT).show();
-                Toast.makeText(getBaseContext(),"บันทึกสำเร็จ"  ,Toast.LENGTH_SHORT).show();
-            }else if(  code==0 )
-            {
-                Toast.makeText(getBaseContext(),"Sorry, Try Again", Toast.LENGTH_LONG).show();
-            }
-
-
-
-
-
-        }catch (Exception e)
-        {
-            Log.e("Fail 3", e.toString());
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        progressBar.dismiss();
 
-
+        return 100;
 
     }
 
