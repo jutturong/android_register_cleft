@@ -541,7 +541,7 @@ public  String urlinsert=  ip_main_system  + "index.php/welcome/insertPatient2";
                  progressBarStatus = DoWork();
 
                  try {
-                     Thread.sleep(15);
+                     Thread.sleep(15); //ยิ่งตัวเลขน้อยยิ่งเร็ว
                  } catch (InterruptedException e) {
                      e.printStackTrace();
                  }
